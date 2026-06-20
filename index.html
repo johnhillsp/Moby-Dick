@@ -1,0 +1,1173 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Baleia Branca | Grupo de leitura</title>
+    <style>
+      :root {
+        --paper: #f7f1e5;
+        --paper-strong: #efe3cf;
+        --ink: #1b2630;
+        --muted: #5f6770;
+        --line: #d6c8b4;
+        --ocean: #174f63;
+        --ocean-soft: #dce9e8;
+        --rust: #a24f35;
+        --gold: #b28a42;
+        --green: #3f6b57;
+        --white: #fffaf0;
+        --shadow: 0 16px 40px rgba(31, 38, 44, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+      }
+
+      aside {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 22px;
+        background: #17242d;
+        color: var(--white);
+        overflow: auto;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .mark {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 250, 240, 0.28);
+        border-radius: 8px;
+        background: rgba(255, 250, 240, 0.08);
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.32rem;
+        line-height: 1.05;
+        font-weight: 700;
+      }
+
+      .brand p {
+        margin: 4px 0 0;
+        color: #c6d1d5;
+        font-size: 0.84rem;
+      }
+
+      nav {
+        display: grid;
+        gap: 7px;
+      }
+
+      .nav-button {
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        color: #eaf0f1;
+        background: transparent;
+        text-align: left;
+      }
+
+      .nav-button:hover,
+      .nav-button.active {
+        border-color: rgba(255, 250, 240, 0.2);
+        background: rgba(255, 250, 240, 0.1);
+      }
+
+      .side-block {
+        margin-top: 26px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 250, 240, 0.16);
+      }
+
+      .side-block h2 {
+        margin: 0 0 12px;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #b9c7ca;
+      }
+
+      .progress {
+        display: grid;
+        gap: 8px;
+      }
+
+      .progress-bar {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(255, 250, 240, 0.14);
+      }
+
+      .progress-bar span {
+        display: block;
+        width: 42%;
+        height: 100%;
+        background: linear-gradient(90deg, #caa45d, #6ca38c);
+      }
+
+      .progress small,
+      .quote {
+        color: #c6d1d5;
+      }
+
+      .quote {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        line-height: 1.5;
+      }
+
+      main {
+        min-width: 0;
+      }
+
+      .hero {
+        min-height: 245px;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        padding: 38px clamp(22px, 5vw, 58px);
+        background:
+          linear-gradient(90deg, rgba(247, 241, 229, 0.97), rgba(247, 241, 229, 0.72)),
+          url("moby-dick-carta-nautica.png") center / cover;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .hero-content {
+        max-width: 860px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--rust);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+
+      .hero h2 {
+        max-width: 760px;
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.2rem, 5vw, 4.7rem);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .hero p:last-child {
+        max-width: 650px;
+        margin: 16px 0 0;
+        color: #38424a;
+        font-size: 1.02rem;
+        line-height: 1.55;
+      }
+
+      .content {
+        padding: 28px clamp(18px, 4vw, 46px) 56px;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .search,
+      .select,
+      .input,
+      .textarea {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--ink);
+        background: var(--white);
+      }
+
+      .search,
+      .select,
+      .input {
+        min-height: 42px;
+        padding: 0 12px;
+      }
+
+      .search {
+        flex: 1 1 260px;
+      }
+
+      .select {
+        flex: 0 0 190px;
+      }
+
+      .section {
+        display: none;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      .section-head h3 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.7rem;
+      }
+
+      .section-head p {
+        max-width: 620px;
+        margin: 6px 0 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .stat {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 250, 240, 0.72);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.45rem;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .meeting {
+        display: grid;
+        grid-template-columns: 126px minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: start;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: 0 8px 24px rgba(31, 38, 44, 0.05);
+      }
+
+      .date {
+        color: var(--ocean);
+        font-weight: 800;
+      }
+
+      .meeting h4,
+      .chapter h4,
+      .resource h4,
+      .comment h4 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .meeting p,
+      .chapter p,
+      .resource p,
+      .comment p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 25px;
+        padding: 3px 8px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: #34424b;
+        background: #f6ecdc;
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
+
+      .status {
+        min-width: 92px;
+        justify-content: center;
+        border-color: transparent;
+        color: white;
+        background: var(--green);
+      }
+
+      .status.next {
+        background: var(--rust);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .chapter,
+      .resource,
+      .comment,
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: 0 8px 24px rgba(31, 38, 44, 0.05);
+      }
+
+      .chapter,
+      .resource,
+      .comment {
+        padding: 15px;
+      }
+
+      .chapter.selected {
+        outline: 3px solid rgba(23, 79, 99, 0.2);
+        border-color: var(--ocean);
+      }
+
+      .chapter button,
+      .primary,
+      .ghost {
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 12px;
+        border-radius: 8px;
+        font-weight: 750;
+      }
+
+      .chapter button,
+      .primary {
+        border: 1px solid var(--ocean);
+        color: white;
+        background: var(--ocean);
+      }
+
+      .ghost {
+        border: 1px solid var(--line);
+        color: var(--ink);
+        background: var(--white);
+      }
+
+      .chapter button {
+        margin-top: 12px;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 16px;
+        align-items: start;
+      }
+
+      .panel {
+        overflow: hidden;
+      }
+
+      .panel-head {
+        padding: 16px;
+        border-bottom: 1px solid var(--line);
+        background: #f4ead9;
+      }
+
+      .panel-head h4 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.25rem;
+      }
+
+      .panel-body {
+        padding: 16px;
+      }
+
+      .commentary {
+        display: grid;
+        gap: 14px;
+      }
+
+      .note {
+        padding-left: 14px;
+        border-left: 4px solid var(--gold);
+      }
+
+      .note h5 {
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      .note p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .resource {
+        display: grid;
+        min-height: 190px;
+        align-content: start;
+      }
+
+      .resource-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .type {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        color: white;
+        background: var(--rust);
+        font-weight: 900;
+      }
+
+      .type.video {
+        background: var(--ocean);
+      }
+
+      .type.site {
+        background: var(--green);
+      }
+
+      .type.texto {
+        background: var(--gold);
+      }
+
+      .comment-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .comment strong {
+        color: var(--ocean);
+      }
+
+      .form {
+        display: grid;
+        gap: 10px;
+      }
+
+      .textarea {
+        min-height: 116px;
+        padding: 12px;
+        resize: vertical;
+      }
+
+      .input {
+        width: 100%;
+      }
+
+      .empty {
+        padding: 24px;
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        color: var(--muted);
+        background: rgba(255, 250, 240, 0.58);
+      }
+
+      @media (max-width: 980px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        aside {
+          position: static;
+          height: auto;
+        }
+
+        nav {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .side-block {
+          display: none;
+        }
+
+        .grid,
+        .stats,
+        .split {
+          grid-template-columns: 1fr;
+        }
+
+        .meeting {
+          grid-template-columns: 1fr;
+        }
+
+        .status {
+          width: fit-content;
+        }
+      }
+
+      @media (max-width: 620px) {
+        nav {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        aside {
+          padding: 16px;
+        }
+
+        .hero {
+          min-height: 230px;
+          padding: 24px 18px;
+        }
+
+        .section-head {
+          display: block;
+        }
+
+        .select {
+          flex: 1 1 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside>
+        <div class="brand">
+          <div class="mark" aria-hidden="true">☽</div>
+          <div>
+            <h1>Baleia Branca</h1>
+            <p>Clube de leitura de Moby Dick</p>
+          </div>
+        </div>
+
+        <nav aria-label="Navegação principal">
+          <button class="nav-button active" data-tab="cronograma">◷ Cronograma</button>
+          <button class="nav-button" data-tab="livro">☰ Livro</button>
+          <button class="nav-button" data-tab="recursos">◎ Recursos</button>
+          <button class="nav-button" data-tab="conversa">✎ Conversa</button>
+        </nav>
+
+        <div class="side-block">
+          <h2>Andamento</h2>
+          <div class="progress">
+            <div class="progress-bar" aria-label="42% do percurso de leitura">
+              <span></span>
+            </div>
+            <small>Capítulos 1 a 42 concluídos</small>
+          </div>
+        </div>
+
+        <div class="side-block">
+          <h2>Fio da semana</h2>
+          <p class="quote">
+            Observar como o humor, a erudição e a ameaça convivem antes que Ahab assuma o centro da viagem.
+          </p>
+        </div>
+      </aside>
+
+      <main>
+        <header class="hero">
+          <div class="hero-content">
+            <p class="eyebrow">Ferramenta do grupo</p>
+            <h2>Moby Dick</h2>
+            <p>
+              Leituras, encontros, comentários críticos e anotações coletivas para acompanhar a travessia do Pequod.
+            </p>
+          </div>
+        </header>
+
+        <div class="content">
+          <section id="cronograma" class="section active" aria-labelledby="cronograma-titulo">
+            <div class="section-head">
+              <div>
+                <h3 id="cronograma-titulo">Cronograma de encontros</h3>
+                <p>Roteiro de leitura com temas de conversa, capítulos atribuídos e estado de cada reunião.</p>
+              </div>
+            </div>
+
+            <div class="stats">
+              <div class="stat"><strong>8</strong><span>encontros planejados</span></div>
+              <div class="stat"><strong>42</strong><span>capítulos já lidos</span></div>
+              <div class="stat"><strong>5</strong><span>temas recorrentes</span></div>
+            </div>
+
+            <div class="timeline" id="meetingList"></div>
+          </section>
+
+          <section id="livro" class="section" aria-labelledby="livro-titulo">
+            <div class="section-head">
+              <div>
+                <h3 id="livro-titulo">Livro e comentários</h3>
+                <p>Notas de especialista por bloco de capítulos, com temas para orientar a discussão.</p>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <input class="search" id="chapterSearch" type="search" placeholder="Buscar capítulo, tema ou comentário" />
+              <select class="select" id="themeFilter" aria-label="Filtrar por tema">
+                <option value="todos">Todos os temas</option>
+              </select>
+            </div>
+
+            <div class="split">
+              <div class="grid" id="chapterGrid"></div>
+              <article class="panel" id="chapterPanel"></article>
+            </div>
+          </section>
+
+          <section id="recursos" class="section" aria-labelledby="recursos-titulo">
+            <div class="section-head">
+              <div>
+                <h3 id="recursos-titulo">Biblioteca de recursos</h3>
+                <p>Áudio, vídeo, ensaios e referências para aprofundar a leitura sem perder o ritmo do grupo.</p>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <input class="search" id="resourceSearch" type="search" placeholder="Buscar recurso, capítulo ou assunto" />
+              <select class="select" id="resourceFilter" aria-label="Filtrar por tipo">
+                <option value="todos">Todos os tipos</option>
+                <option value="Áudio">Áudio</option>
+                <option value="Vídeo">Vídeo</option>
+                <option value="Site">Site</option>
+                <option value="Texto">Texto</option>
+              </select>
+            </div>
+
+            <div class="grid" id="resourceGrid"></div>
+          </section>
+
+          <section id="conversa" class="section" aria-labelledby="conversa-titulo">
+            <div class="section-head">
+              <div>
+                <h3 id="conversa-titulo">Conversa do grupo</h3>
+                <p>Comentários sobre a obra inteira, capítulos específicos ou passagens escolhidas.</p>
+              </div>
+            </div>
+
+            <div class="split">
+              <div class="panel">
+                <div class="panel-head">
+                  <h4>Novo comentário</h4>
+                </div>
+                <div class="panel-body">
+                  <form class="form" id="commentForm">
+                    <input class="input" id="commentName" required placeholder="Seu nome" />
+                    <select class="select" id="commentScope" required>
+                      <option value="Obra inteira">Obra inteira</option>
+                      <option value="Capítulo 1">Capítulo 1</option>
+                      <option value="Capítulo 10">Capítulo 10</option>
+                      <option value="Capítulo 36">Capítulo 36</option>
+                      <option value="Capítulo 42">Capítulo 42</option>
+                    </select>
+                    <textarea class="textarea" id="commentText" required placeholder="Escreva seu comentário"></textarea>
+                    <button class="primary" type="submit">Publicar</button>
+                  </form>
+                </div>
+              </div>
+
+              <div>
+                <div class="toolbar">
+                  <input class="search" id="commentSearch" type="search" placeholder="Buscar nos comentários" />
+                  <button class="ghost" id="clearLocal" type="button">Limpar comentários locais</button>
+                </div>
+                <div class="comment-list" id="commentList"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const meetings = [
+        {
+          data: "02 jul",
+          titulo: "Entrada em cena: Ismael e Queequeg",
+          capitulos: "Capítulos 1-13",
+          tema: "Narrador, humor e hospitalidade",
+          estado: "Concluído",
+        },
+        {
+          data: "09 jul",
+          titulo: "O navio, a tripulação e o sermão",
+          capitulos: "Capítulos 14-22",
+          tema: "Religião, destino e comunidade",
+          estado: "Concluído",
+        },
+        {
+          data: "16 jul",
+          titulo: "Ahab aparece",
+          capitulos: "Capítulos 23-36",
+          tema: "Autoridade, obsessão e teatro",
+          estado: "Próximo",
+        },
+        {
+          data: "23 jul",
+          titulo: "A brancura e o conhecimento",
+          capitulos: "Capítulos 37-45",
+          tema: "Símbolo, ciência e medo",
+          estado: "Planejado",
+        },
+        {
+          data: "30 jul",
+          titulo: "Anatomias do mar",
+          capitulos: "Capítulos 46-68",
+          tema: "Enciclopédia, trabalho e corpo",
+          estado: "Planejado",
+        },
+        {
+          data: "06 ago",
+          titulo: "Presságios e encontros",
+          capitulos: "Capítulos 69-96",
+          tema: "Sinais, acaso e repetição",
+          estado: "Planejado",
+        },
+        {
+          data: "13 ago",
+          titulo: "A máquina do Pequod",
+          capitulos: "Capítulos 97-119",
+          tema: "Economia, técnica e violência",
+          estado: "Planejado",
+        },
+        {
+          data: "20 ago",
+          titulo: "A perseguição final",
+          capitulos: "Capítulos 120-Epílogo",
+          tema: "Tragédia, testemunho e sobrevivência",
+          estado: "Planejado",
+        },
+      ];
+
+      const chapters = [
+        {
+          id: "c1",
+          titulo: "Capítulos 1-3",
+          subtitulo: "Chamem-me Ismael",
+          temas: ["narrador", "humor", "solidão"],
+          resumo:
+            "A abertura transforma uma crise pessoal em convite narrativo. Ismael apresenta o mar como remédio, fuga e laboratório moral.",
+          comentario:
+            "O começo é menos uma apresentação estável do narrador e mais uma encenação de instabilidade. Ismael brinca com autoridade, disfarça angústia como ironia e cria intimidade sem entregar plena confiança.",
+          pergunta: "Como o humor altera nossa percepção da melancolia de Ismael?",
+        },
+        {
+          id: "c10",
+          titulo: "Capítulos 10-13",
+          subtitulo: "Queequeg e a ética da convivência",
+          temas: ["amizade", "religião", "alteridade"],
+          resumo:
+            "A relação entre Ismael e Queequeg desloca preconceitos iniciais e faz da intimidade uma forma prática de interpretação.",
+          comentario:
+            "Melville usa a hospedaria e o quarto compartilhado como laboratório social. O romance testa o leitor: a diferença que parecia ameaça se torna disciplina de atenção, humor e reciprocidade.",
+          pergunta: "O que muda quando Ismael passa a aprender com Queequeg em vez de apenas observá-lo?",
+        },
+        {
+          id: "c36",
+          titulo: "Capítulo 36",
+          subtitulo: "O tombadilho",
+          temas: ["Ahab", "obsessão", "teatro"],
+          resumo:
+            "Ahab declara o verdadeiro propósito da viagem e converte a caça em missão metafísica diante da tripulação.",
+          comentario:
+            "Este capítulo funciona como cena teatral. Ahab não apenas revela uma obsessão; ele a distribui como espetáculo, ritual e contrato emocional. O poder dele depende de transformar linguagem em contágio.",
+          pergunta: "A tripulação é convencida por argumento, medo, carisma ou desejo de pertencimento?",
+        },
+        {
+          id: "c42",
+          titulo: "Capítulo 42",
+          subtitulo: "A brancura da baleia",
+          temas: ["símbolo", "medo", "metafísica"],
+          resumo:
+            "Ismael examina a cor branca como sinal ambíguo: pureza, vazio, terror, transcendência e apagamento.",
+          comentario:
+            "A força do capítulo está em recusar uma chave única. A brancura não significa uma coisa; ela expõe o excesso de significados e o pânico que surge quando a interpretação não encontra repouso.",
+          pergunta: "A baleia é um símbolo legível ou a falência da leitura simbólica?",
+        },
+        {
+          id: "c68",
+          titulo: "Capítulos 55-68",
+          subtitulo: "Como representar uma baleia",
+          temas: ["ciência", "imagem", "conhecimento"],
+          resumo:
+            "O romance mistura taxonomia, crítica de imagens, observação técnica e comicidade para pensar os limites do saber.",
+          comentario:
+            "Melville transforma a descrição em disputa. O saber livresco, a experiência de trabalho e a imaginação artística se corrigem e se sabotam mutuamente.",
+          pergunta: "Quando o romance parece enciclopédico, ele está esclarecendo ou complicando?",
+        },
+        {
+          id: "final",
+          titulo: "Capítulos 120-Epílogo",
+          subtitulo: "Perseguição e testemunho",
+          temas: ["tragédia", "sobrevivência", "destino"],
+          resumo:
+            "A perseguição final concentra os fios de destino, autoridade, violência e narração em uma catástrofe testemunhada por Ismael.",
+          comentario:
+            "O final dá à sobrevivência um peso narrativo. Ismael não vence a história: ele carrega os destroços dela e transforma perda em relato.",
+          pergunta: "O epílogo consola, acusa ou apenas preserva?",
+        },
+      ];
+
+      const resources = [
+        {
+          tipo: "Áudio",
+          titulo: "Audiolivro em capítulos",
+          origem: "Domínio público",
+          escopo: "Obra inteira",
+          descricao:
+            "Leitura integral para acompanhar deslocamentos, revisões e trechos de alta oralidade.",
+          tags: ["áudio", "leitura", "ritmo"],
+        },
+        {
+          tipo: "Vídeo",
+          titulo: "Aula introdutória sobre Melville",
+          origem: "Curso aberto",
+          escopo: "Contexto",
+          descricao:
+            "Panorama de publicação, recepção crítica e lugar do romance na literatura norte-americana.",
+          tags: ["vídeo", "contexto", "Melville"],
+        },
+        {
+          tipo: "Site",
+          titulo: "Mapa da viagem do Pequod",
+          origem: "Arquivo digital",
+          escopo: "Obra inteira",
+          descricao:
+            "Representação geográfica dos deslocamentos e encontros marítimos mencionados no romance.",
+          tags: ["mapa", "viagem", "Pequod"],
+        },
+        {
+          tipo: "Texto",
+          titulo: "Ensaio sobre a brancura",
+          origem: "Comentário crítico",
+          escopo: "Capítulo 42",
+          descricao:
+            "Leitura interpretativa do branco como excesso simbólico, medo e indeterminação.",
+          tags: ["símbolo", "medo", "capítulo 42"],
+        },
+        {
+          tipo: "Site",
+          titulo: "Glossário baleeiro",
+          origem: "Referência",
+          escopo: "Capítulos técnicos",
+          descricao:
+            "Vocabulário de navios, instrumentos, funções de bordo e práticas de caça à baleia.",
+          tags: ["glossário", "trabalho", "técnica"],
+        },
+        {
+          tipo: "Vídeo",
+          titulo: "Adaptações de Moby Dick no cinema",
+          origem: "Debate gravado",
+          escopo: "Obra inteira",
+          descricao:
+            "Comparação entre escolhas visuais, cortes narrativos e diferentes retratos de Ahab.",
+          tags: ["adaptação", "cinema", "Ahab"],
+        },
+      ];
+
+      const seedComments = [
+        {
+          nome: "Marina",
+          escopo: "Capítulo 36",
+          texto:
+            "A fala de Ahab parece uma reunião de trabalho virando ritual. Achei assustador como todo mundo entra no ritmo.",
+          data: "Hoje",
+        },
+        {
+          nome: "Rafael",
+          escopo: "Obra inteira",
+          texto:
+            "Gosto quando o livro interrompe a aventura para virar quase ensaio. Isso muda meu jeito de ler os capítulos de ação.",
+          data: "Ontem",
+        },
+        {
+          nome: "Lia",
+          escopo: "Capítulo 42",
+          texto:
+            "A brancura me parece menos um símbolo e mais uma pane no sistema de símbolos. O capítulo me deixou sem chão.",
+          data: "14 jun",
+        },
+      ];
+
+      const tabButtons = document.querySelectorAll(".nav-button");
+      const sections = document.querySelectorAll(".section");
+      const meetingList = document.querySelector("#meetingList");
+      const chapterGrid = document.querySelector("#chapterGrid");
+      const chapterPanel = document.querySelector("#chapterPanel");
+      const themeFilter = document.querySelector("#themeFilter");
+      const chapterSearch = document.querySelector("#chapterSearch");
+      const resourceGrid = document.querySelector("#resourceGrid");
+      const resourceSearch = document.querySelector("#resourceSearch");
+      const resourceFilter = document.querySelector("#resourceFilter");
+      const commentForm = document.querySelector("#commentForm");
+      const commentList = document.querySelector("#commentList");
+      const commentSearch = document.querySelector("#commentSearch");
+      const clearLocal = document.querySelector("#clearLocal");
+
+      let selectedChapter = chapters[0].id;
+      let comments = JSON.parse(localStorage.getItem("mobyComentarios") || "null") || seedComments;
+
+      function setTab(tab) {
+        tabButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.tab === tab);
+        });
+        sections.forEach((section) => {
+          section.classList.toggle("active", section.id === tab);
+        });
+      }
+
+      function renderMeetings() {
+        meetingList.innerHTML = meetings
+          .map(
+            (meeting) => `
+              <article class="meeting">
+                <div class="date">${meeting.data}</div>
+                <div>
+                  <h4>${meeting.titulo}</h4>
+                  <p>${meeting.capitulos}</p>
+                  <div class="pill-row">
+                    <span class="pill">${meeting.tema}</span>
+                  </div>
+                </div>
+                <span class="pill status ${meeting.estado === "Próximo" ? "next" : ""}">${meeting.estado}</span>
+              </article>
+            `,
+          )
+          .join("");
+      }
+
+      function renderThemeOptions() {
+        const temas = [...new Set(chapters.flatMap((chapter) => chapter.temas))].sort();
+        themeFilter.innerHTML += temas.map((tema) => `<option value="${tema}">${tema}</option>`).join("");
+      }
+
+      function chapterMatches(chapter) {
+        const query = chapterSearch.value.trim().toLowerCase();
+        const theme = themeFilter.value;
+        const text = [chapter.titulo, chapter.subtitulo, chapter.resumo, chapter.comentario, chapter.temas.join(" ")]
+          .join(" ")
+          .toLowerCase();
+        return (!query || text.includes(query)) && (theme === "todos" || chapter.temas.includes(theme));
+      }
+
+      function renderChapters() {
+        const visible = chapters.filter(chapterMatches);
+        chapterGrid.innerHTML = visible.length
+          ? visible
+              .map(
+                (chapter) => `
+                  <article class="chapter ${chapter.id === selectedChapter ? "selected" : ""}">
+                    <h4>${chapter.titulo}</h4>
+                    <p><strong>${chapter.subtitulo}</strong></p>
+                    <p>${chapter.resumo}</p>
+                    <div class="pill-row">
+                      ${chapter.temas.map((tema) => `<span class="pill">${tema}</span>`).join("")}
+                    </div>
+                    <button type="button" data-chapter="${chapter.id}">Abrir notas</button>
+                  </article>
+                `,
+              )
+              .join("")
+          : `<div class="empty">Nenhum capítulo encontrado.</div>`;
+
+        const active = chapters.find((chapter) => chapter.id === selectedChapter) || visible[0] || chapters[0];
+        renderChapterPanel(active);
+      }
+
+      function renderChapterPanel(chapter) {
+        chapterPanel.innerHTML = `
+          <div class="panel-head">
+            <h4>${chapter.titulo}: ${chapter.subtitulo}</h4>
+          </div>
+          <div class="panel-body commentary">
+            <div class="note">
+              <h5>Comentário de especialista</h5>
+              <p>${chapter.comentario}</p>
+            </div>
+            <div class="note">
+              <h5>Pergunta para o encontro</h5>
+              <p>${chapter.pergunta}</p>
+            </div>
+            <div class="note">
+              <h5>Comentários relacionados</h5>
+              <p>${comments.filter((comment) => comment.escopo.includes(chapter.titulo.split(" ")[1]) || comment.escopo === "Obra inteira").length} comentário(s) do grupo conectados a este bloco.</p>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderResources() {
+        const query = resourceSearch.value.trim().toLowerCase();
+        const type = resourceFilter.value;
+        const visible = resources.filter((resource) => {
+          const text = [resource.tipo, resource.titulo, resource.origem, resource.escopo, resource.descricao, resource.tags.join(" ")]
+            .join(" ")
+            .toLowerCase();
+          return (!query || text.includes(query)) && (type === "todos" || resource.tipo === type);
+        });
+
+        resourceGrid.innerHTML = visible.length
+          ? visible
+              .map((resource) => {
+                const icon = { Áudio: "♪", Vídeo: "▶", Site: "⌁", Texto: "¶" }[resource.tipo];
+                const cls = resource.tipo.toLowerCase();
+                return `
+                  <article class="resource">
+                    <div class="resource-top">
+                      <span class="type ${cls}">${icon}</span>
+                      <span class="pill">${resource.tipo}</span>
+                    </div>
+                    <h4>${resource.titulo}</h4>
+                    <p>${resource.descricao}</p>
+                    <div class="pill-row">
+                      <span class="pill">${resource.origem}</span>
+                      <span class="pill">${resource.escopo}</span>
+                    </div>
+                  </article>
+                `;
+              })
+              .join("")
+          : `<div class="empty">Nenhum recurso encontrado.</div>`;
+      }
+
+      function saveComments() {
+        localStorage.setItem("mobyComentarios", JSON.stringify(comments));
+      }
+
+      function renderComments() {
+        const query = commentSearch.value.trim().toLowerCase();
+        const visible = comments.filter((comment) =>
+          [comment.nome, comment.escopo, comment.texto, comment.data].join(" ").toLowerCase().includes(query),
+        );
+        commentList.innerHTML = visible.length
+          ? visible
+              .map(
+                (comment) => `
+                  <article class="comment">
+                    <h4><strong>${comment.nome}</strong> · ${comment.escopo}</h4>
+                    <p>${comment.texto}</p>
+                    <div class="pill-row"><span class="pill">${comment.data}</span></div>
+                  </article>
+                `,
+              )
+              .join("")
+          : `<div class="empty">Nenhum comentário encontrado.</div>`;
+      }
+
+      tabButtons.forEach((button) => {
+        button.addEventListener("click", () => setTab(button.dataset.tab));
+      });
+
+      chapterGrid.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-chapter]");
+        if (!button) return;
+        selectedChapter = button.dataset.chapter;
+        renderChapters();
+      });
+
+      chapterSearch.addEventListener("input", renderChapters);
+      themeFilter.addEventListener("change", renderChapters);
+      resourceSearch.addEventListener("input", renderResources);
+      resourceFilter.addEventListener("change", renderResources);
+      commentSearch.addEventListener("input", renderComments);
+
+      commentForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        comments = [
+          {
+            nome: document.querySelector("#commentName").value.trim(),
+            escopo: document.querySelector("#commentScope").value,
+            texto: document.querySelector("#commentText").value.trim(),
+            data: "Agora",
+          },
+          ...comments,
+        ];
+        saveComments();
+        commentForm.reset();
+        renderComments();
+        renderChapters();
+      });
+
+      clearLocal.addEventListener("click", () => {
+        comments = seedComments;
+        saveComments();
+        renderComments();
+        renderChapters();
+      });
+
+      renderMeetings();
+      renderThemeOptions();
+      renderChapters();
+      renderResources();
+      renderComments();
+    </script>
+  </body>
+</html>
